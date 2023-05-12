@@ -1,10 +1,8 @@
 import { FormEvent, useRef } from 'react';
+import useTodos from '../hooks/useTodos';
 
-type Props = {
-  addTodo: (task: string) => void;
-};
-
-function TodoForm({ addTodo }: Props) {
+function TodoForm() {
+  const { dispatch } = useTodos();
   const taskRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: FormEvent) => {
@@ -15,7 +13,7 @@ function TodoForm({ addTodo }: Props) {
       return;
     }
 
-    addTodo(task);
+    dispatch({ type: 'ADD_TODO', payload: { task } });
     taskRef.current!.value = '';
   };
 

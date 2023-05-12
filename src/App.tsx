@@ -1,10 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Todos from './components/Todos';
+import { TodosProvider } from './context/TodosContext';
+import TodoForm from './components/TodoForm';
+import TodoList from './components/TodoList';
 
 function App() {
   return (
     <div className="container">
-      <Todos />
+      <TodosProvider>
+        <TodoForm />
+        <TodoList />
+      </TodosProvider>
     </div>
   );
 }

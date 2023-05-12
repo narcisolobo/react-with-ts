@@ -1,14 +1,15 @@
-import { ChangeEvent } from 'react';
 import Todo from '../models/todo';
 import { BsTrash } from 'react-icons/bs';
+import useTodos from '../hooks/useTodos';
+import { ChangeEvent } from 'react';
 
 type Props = {
   todo: Todo;
-  toggleTodo: (e: ChangeEvent<HTMLInputElement>, id: string) => void;
-  deleteTodo: (id: string) => void;
 };
 
-function TodoItem({ todo, toggleTodo, deleteTodo }: Props) {
+function TodoItem({ todo }: Props) {
+  const { dispatch } = useTodos();
+
   return (
     <li className="list-group-item d-flex justify-content-between align-items-center">
       <div className="form-check">
@@ -18,7 +19,10 @@ function TodoItem({ todo, toggleTodo, deleteTodo }: Props) {
           className="form-check-input"
           checked={todo.isComplete}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            toggleTodo(e, todo.id)
+            dispatch({
+              type: 'TOGGLE_TODO',
+              payload: { event: e, targetId: todo.id },
+            })
           }
         />
         <label
@@ -31,7 +35,9 @@ function TodoItem({ todo, toggleTodo, deleteTodo }: Props) {
       </div>
       <button
         className="btn btn-sm btn-danger"
-        onClick={() => deleteTodo(todo.id)}>
+        onClick={() =>
+          dispatch({ type: 'DELETE_TODO', payload: { targetId: todo.id } })
+        }>
         <BsTrash />
       </button>
     </li>
